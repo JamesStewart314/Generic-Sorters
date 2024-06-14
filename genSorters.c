@@ -295,11 +295,20 @@ uint64_t generateRandomIndex(uint64_t start, uint64_t end) {
 
     //srand((unsigned int)time(NULL));
 
-    if (end > RAND_MAX) {
-        uint64_t offsetValue = (end > RAND_MAX) ? (uint64_t)ceil((long double)end / (long double)RAND_MAX) : 1;
-        return getuint64tMin(((uint64_t)rand() * offsetValue) + ((uint64_t)rand() * offsetValue), end);
+    uint64_t intervalRange = end - start;
+
+    if (intervalRange > RAND_MAX) {
+        uint64_t offsetValue = (uint64_t)ceil((long double)intervalRange / (long double)RAND_MAX);
+
+        // Generating previous values to clean
+        // the random number generator:
+        ((uint64_t)rand() * offsetValue);
+        ((uint64_t)rand() % offsetValue);
+
+        return getuint64tMin(start + ((uint64_t)rand() * offsetValue) + ((uint64_t)rand() % offsetValue), start + intervalRange);
     } else {
-        return (uint64_t)rand() % (end + 1);
+        // The time squared and division by 37 is just to improve the randomness:
+        return ((uint64_t)rand() + (uint64_t)(time(NULL) * time(NULL)) / 13) % (intervalRange + 1) + start;
     }    
 }
 
