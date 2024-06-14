@@ -24,7 +24,7 @@ Below is a table to illustrate the different functions currently available:
 | Function                |                  | Time Complexity    |                  | Space Complexity |
 |:-----------------------:|:----------------:|:------------------:|:----------------:|:----------------:|
 |                         | **Best Case**    | **Average Case**   | **Worst Case**   | **Worst Case**   |
-| Bogo Sort               | O(1)             | O(?)               | O(ꝏ)            | O(1)             |
+| Bogo Sort 🤹            | Ω(1)             | Θ(?)               | O(ꝏ)            | O(1)             |
 
 
 </div>
