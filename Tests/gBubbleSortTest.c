@@ -1,6 +1,4 @@
 #include "genSorters.h"
-#include <string.h>
-#include <time.h>
 
 #define ARRAY_SIZE 10000
 

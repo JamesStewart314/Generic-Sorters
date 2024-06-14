@@ -198,7 +198,7 @@ void gBubbleSort(compareFunctionGenSort compareF, void* arrayPointer, uint64_t a
     if (!arrayPointer || arraySize < 2) return;
 
     if (!compareF || dataSize == 0) {
-        if (!compareF) fprintf(stderr, "Error: Cannot generic Bubble Sort the Array if the compare function is NULL.\n");
+        if (!compareF) fprintf(stderr, "Error: Cannot do generic Bubble Sort the Array if the compare function is NULL.\n");
         if (dataSize == 0) fprintf(stderr, "Error: DataSize parameter for generic Bubble Sort function cannot be zero.\n");
         return;
     }
@@ -243,7 +243,7 @@ void gMergeSort(compareFunctionGenSort compareF, void* arrayPointer, uint64_t ar
     if (!arrayPointer || arraySize < 2) return;
 
     if (!compareF || dataSize == 0) {
-        if (!compareF) fprintf(stderr, "Error: Cannot generic Merge Sort the Array if the compare function is NULL.\n");
+        if (!compareF) fprintf(stderr, "Error: Cannot do generic Merge Sort the Array if the compare function is NULL.\n");
         if (dataSize == 0) fprintf(stderr, "Error: DataSize parameter for generic Merge Sort function cannot be zero.\n");
         return;
     }
@@ -258,12 +258,67 @@ void gQuickSort(compareFunctionGenSort compareF, void* arrayPointer, uint64_t ar
     if (!arrayPointer || arraySize < 2) return;
 
     if (!compareF || dataSize == 0) {
-        if (!compareF) fprintf(stderr, "Error: Cannot generic Quick Sort the Array if the compare function is NULL.\n");
+        if (!compareF) fprintf(stderr, "Error: Cannot do generic Quick Sort the Array if the compare function is NULL.\n");
         if (dataSize == 0) fprintf(stderr, "Error: DataSize parameter for generic Quick Sort function cannot be zero.\n");
         return;
     }
 
     gRecursiveQuickSort(compareF, arrayPointer, arraySize, dataSize);
+
+    return;
+}
+
+// ---------------------------------------------------------------------------- //
+
+uint64_t getuint64tMin(uint64_t a, uint64_t b) { return (a < b) ? a : b; }
+
+bool checkArrayIsOrdered(compareFunctionGenSort compareF, void* arrayPointer, uint64_t arraySize, uint64_t dataSize) {
+    if (!arrayPointer || arraySize < 2) return true;
+
+    if (!compareF || dataSize == 0) {
+        if (!compareF) fprintf(stderr, "Error: Cannot generic Quick Sort the Array if the compare function is NULL.\n");
+        if (dataSize == 0) fprintf(stderr, "Error: DataSize parameter for generic Quick Sort function cannot be zero.\n");
+        return false;
+    }
+
+    void* lastPointer = arrayPointer + dataSize * (arraySize - 1);
+    while (arrayPointer < lastPointer) {
+        if (compareF(arrayPointer, arrayPointer + dataSize) > 0) return false;
+        arrayPointer += dataSize;
+    }
+
+    return true;
+}
+
+uint64_t generateRandomIndex(uint64_t start, uint64_t end) {
+    if (end < start) return 0;
+
+    //srand((unsigned int)time(NULL));
+
+    if (end > RAND_MAX) {
+        uint64_t offsetValue = (end > RAND_MAX) ? (uint64_t)ceil((long double)end / (long double)RAND_MAX) : 1;
+        return getuint64tMin(((uint64_t)rand() * offsetValue) + ((uint64_t)rand() * offsetValue), end);
+    } else {
+        return (uint64_t)rand() % (end + 1);
+    }    
+}
+
+void gBogoSort(compareFunctionGenSort compareF, void* arrayPointer, uint64_t arraySize, uint64_t dataSize) {
+    if (!arrayPointer || arraySize < 2) return;
+
+    if (!compareF || dataSize == 0) {
+        if (!compareF) fprintf(stderr, "Error: Cannot do generic Bogo Sort the Array if the compare function is NULL.\n");
+        if (dataSize == 0) fprintf(stderr, "Error: DataSize parameter for generic Quick Sort function cannot be zero.\n");
+        return;
+    }
+
+    // Randomizing the array elements:
+    do {
+        for (uint64_t i = arraySize - 1; i > 0; i--) {
+            uint64_t t = generateRandomIndex(0, i);
+            gSwapVariables(arrayPointer + dataSize * i, arrayPointer + dataSize * t, dataSize);
+        }
+    } while (!checkArrayIsOrdered(compareF, arrayPointer, arraySize, dataSize));
 
     return;
 }

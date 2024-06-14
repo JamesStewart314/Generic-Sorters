@@ -1,9 +1,6 @@
 #include "../genSorters.h"
-#include <string.h>
-#include <time.h>
 
-
-#define ARRAY_SIZE 80
+#define ARRAY_SIZE 80000
 
 // Compilation Command: gcc gMergeSortTest.c ../genSorters.c -o executableProgram -I ../ -O
 
