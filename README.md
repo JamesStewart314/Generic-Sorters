@@ -4,7 +4,7 @@ Sorting algorithm consists of a set of predefined procedures whose main purpose 
 
 All — or almost all — of the ordering functions presented here are perfectly applicable in real project contexts. I also emphasize that this is a learning repository, where each code here represents my own version of the sorting algorithm, which means that not all of them will be implemented in their most efficient version. However, I ensure that each one has been properly tested and implemented to the best of my ability within my current level of understanding.
 
-All test codes used for each sorting algorithm will be placed in the "Tests" folder of this repository.
+The test codes used for each sorting algorithm will be placed in the "Tests" folder of this repository.
 
 Below is a table to illustrate the different functions currently available:
 
