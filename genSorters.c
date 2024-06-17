@@ -132,9 +132,9 @@ void gRecursiveMergeSort(compareFunctionGenSort compareF, void* arrayPointer, ui
 
 
 void gRecursiveQuickSort(compareFunctionGenSort compareF, void* arrayPointer, uint64_t arraySize, uint64_t dataSize) {
-    if (!arrayPointer) return;
+    //if (!arrayPointer) return;
 
-    if (arraySize <= 1) return;
+    if (arraySize < 2) return;
     if (arraySize == 2) {
         if (compareF(arrayPointer, arrayPointer + dataSize) > 0) gSwapVariables(arrayPointer, arrayPointer + dataSize, dataSize);
         return;
@@ -179,15 +179,11 @@ void gRecursiveQuickSort(compareFunctionGenSort compareF, void* arrayPointer, ui
         while (compareF(auxIndexJ, pivotPointer) > 0) auxIndexJ -= dataSize;
     }
 
+    if (compareF(auxIndexI, pivotPointer) >= 0) gSwapVariables(auxIndexI, pivotPointer, dataSize);
+
     uint64_t auxIndexIFinalIndex = (uint64_t)(auxIndexI - arrayPointer) / dataSize;
 
-    if (compareF(auxIndexI, pivotPointer) >= 0) {
-        gSwapVariables(auxIndexI, pivotPointer, dataSize);
-        gRecursiveQuickSort(compareF, arrayPointer, auxIndexIFinalIndex, dataSize);
-    } else {
-        gRecursiveQuickSort(compareF, arrayPointer, auxIndexIFinalIndex + 1, dataSize);
-    }
-
+    gRecursiveQuickSort(compareF, arrayPointer, auxIndexIFinalIndex, dataSize);
     gRecursiveQuickSort(compareF, auxIndexI + dataSize, arraySize - (auxIndexIFinalIndex + 1), dataSize);
 
     return;  
@@ -307,7 +303,7 @@ uint64_t generateRandomIndex(uint64_t start, uint64_t end) {
 
         return getuint64tMin(start + ((uint64_t)rand() * offsetValue) + ((uint64_t)rand() % offsetValue), start + intervalRange);
     } else {
-        // The time squared and division by 37 is just to improve the randomness:
+        // The time squared and division by 13 is just to improve the randomness:
         return ((uint64_t)rand() + (uint64_t)(time(NULL) * time(NULL)) / 13) % (intervalRange + 1) + start;
     }    
 }
@@ -324,10 +320,14 @@ void gBogoSort(compareFunctionGenSort compareF, void* arrayPointer, uint64_t arr
     // Randomizing the array elements:
     do {
         for (uint64_t i = arraySize - 1; i > 0; i--) {
-            uint64_t t = generateRandomIndex(0, i);
-            gSwapVariables(arrayPointer + dataSize * i, arrayPointer + dataSize * t, dataSize);
+            gSwapVariables(arrayPointer + dataSize * i, arrayPointer + dataSize * generateRandomIndex(0, i), dataSize);
         }
     } while (!checkArrayIsOrdered(compareF, arrayPointer, arraySize, dataSize));
 
+    return;
+}
+
+void gGoodEnough(compareFunctionGenSort compareF, void* arrayPointer, uint64_t arraySize, uint64_t dataSize) {
+    // hmm, eh, it's good enough.
     return;
 }

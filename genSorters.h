@@ -16,5 +16,6 @@ void gMergeSort(compareFunctionGenSort compareF, void* arrayPointer, uint64_t ar
 void gQuickSort(compareFunctionGenSort compareF, void* arrayPointer, uint64_t arraySize, uint64_t dataSize);
 
 void gBogoSort(compareFunctionGenSort compareF, void* arrayPointer, uint64_t arraySize, uint64_t dataSize);
+void gGoodEnough(compareFunctionGenSort compareF, void* arrayPointer, uint64_t arraySize, uint64_t dataSize);
 
 #endif
