@@ -112,9 +112,8 @@ void gMergeArrays(compareFunctionGenSort compareF, void* startPointer, void* end
 
 
 void gRecursiveMergeSort(compareFunctionGenSort compareF, void* arrayPointer, uint64_t arraySize, uint64_t dataSize) {
-    if (!arrayPointer) return;
+    if (!arrayPointer || arraySize < 2) return;
 
-    if (arraySize <= 1) return;
     if (arraySize == 2) {
         if (compareF(arrayPointer, arrayPointer + dataSize) > 0) gSwapVariables(arrayPointer, arrayPointer + dataSize, dataSize);
         return;
