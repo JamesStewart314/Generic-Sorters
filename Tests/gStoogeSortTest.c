@@ -2,8 +2,7 @@
 
 #define ARRAY_SIZE 80000
 
-// Compilation Command: gcc gQuickSortTest.c ../genSorters.c -o executableProgram -I ../
-// -O / -O2 / -O3 
+// Compilation Command: gcc gStoogeSortTest.c ../genSorters.c -o executableProgram -I ../ -O
 
 typedef struct {
     char* name;
@@ -24,17 +23,16 @@ int main(int argc, char** argv) {
 
     srand((unsigned int)time(NULL));
     
-    clock_t myBenchmarkInitialTime, myBenchmarkEndTime, CLibraryBenchmarkInitialTime, CLibraryBenchmarkEndTime;
-    double myTimeSpent, CLibraryTimeSpent;
+    clock_t benchmarkInitialTime, benchmarkEndTime;
+    double timeSpent;
 
     int random_numbers[ARRAY_SIZE];
 
-    
     // Inserting random values in the array:
     for (int i = 0; i < ARRAY_SIZE; i++) {
         random_numbers[i] = rand() % 1000;
     }
-    
+
     /*
     puts("Array of Integers Generated Before Sorting:\n");
     printf("[");
@@ -44,12 +42,11 @@ int main(int argc, char** argv) {
     printf("\b\b]");
     */
     
+    benchmarkInitialTime = clock();
+    gMergeSort(compareFIntegers, random_numbers, (uint64_t)ARRAY_SIZE, (uint64_t)sizeof(int));
+    benchmarkEndTime = clock();
 
-    myBenchmarkInitialTime = clock();
-    gQuickSort(compareFIntegers, random_numbers, (uint64_t)ARRAY_SIZE, (uint64_t)sizeof(int));
-    myBenchmarkEndTime = clock();
-
-    myTimeSpent = (double)(myBenchmarkEndTime - myBenchmarkInitialTime) / CLOCKS_PER_SEC;
+    timeSpent = (double)(benchmarkEndTime - benchmarkInitialTime) / CLOCKS_PER_SEC;
 
     /*
     puts("\n\n\nArray of Integers Generated After Sorting:\n");
@@ -61,25 +58,9 @@ int main(int argc, char** argv) {
     */
     
 
-    // Inserting random values in the array:
-    for (int i = 0; i < ARRAY_SIZE; i++) {
-        random_numbers[i] = rand() % 10;
-    }
+    printf("\n* Time Used to Sort the Integers Array Containing %d Elements: %.2lf\n", ARRAY_SIZE, timeSpent);
 
-    CLibraryBenchmarkInitialTime = clock();
-    qsort(random_numbers, ARRAY_SIZE, sizeof(int), compareFIntegers);
-    CLibraryBenchmarkEndTime = clock();
-
-    CLibraryTimeSpent = (double)(CLibraryBenchmarkEndTime - CLibraryBenchmarkInitialTime) / CLOCKS_PER_SEC;
-
-    printf("\n* Time Used to Sort the Integers Array Containing %d Elements with my Sorting Algorithm: %.5lf\n", ARRAY_SIZE, myTimeSpent);
-    printf("\n* Time Used to Sort the Integers Array Containing %d Elements with C Library Sorting Algorithm: %.5lf\n", ARRAY_SIZE, CLibraryTimeSpent);
-
-    printf("\n[ Ratio Between my Time and C Library Time: %.5lf ]\n", myTimeSpent / CLibraryTimeSpent);
-
-    
     Person personArray[ARRAY_SIZE];
-    
     for (int i = 0; i < ARRAY_SIZE; i++) {
         char* name = getRandomName();
         unsigned int id = getRandomID();
@@ -94,28 +75,13 @@ int main(int argc, char** argv) {
         printf(", ");
     }
     printf("\b\b]\n");
-    */
-    
+    */    
 
-    myBenchmarkInitialTime = clock();
-    gQuickSort(compareFPerson, personArray, (uint64_t)ARRAY_SIZE, (uint64_t)(sizeof(Person)));
-    myBenchmarkEndTime = clock();
+    benchmarkInitialTime = clock();
+    gMergeSort(compareFPerson, personArray, (uint64_t)ARRAY_SIZE, (uint64_t)(sizeof(Person)));
+    benchmarkEndTime = clock();
 
-    myTimeSpent = (double)(myBenchmarkEndTime - myBenchmarkInitialTime) / CLOCKS_PER_SEC;
-
-    for (int i = 0; i < ARRAY_SIZE; i++) destroyFPerson(personArray + i);
-
-    for (int i = 0; i < ARRAY_SIZE; i++) {
-        char* name = getRandomName();
-        unsigned int id = getRandomID();
-        personArray[i] = createPerson(name, id);
-    }
-
-    CLibraryBenchmarkInitialTime = clock();
-    qsort(personArray, (uint64_t)ARRAY_SIZE, (uint64_t)(sizeof(Person)), compareFPerson);
-    CLibraryBenchmarkEndTime = clock();
-
-    CLibraryTimeSpent = (double)(CLibraryBenchmarkEndTime - CLibraryBenchmarkInitialTime) / CLOCKS_PER_SEC;
+    timeSpent = (double)(benchmarkEndTime - benchmarkInitialTime) / CLOCKS_PER_SEC;
 
     /*
     puts("\n\n\nArray of Persons Generated After Sorting:");
@@ -127,16 +93,11 @@ int main(int argc, char** argv) {
     printf("\b\b]\n");
     */
 
-    printf("\n* Time Used to Sort the Persons Array Containing %d Elements with my Sorting Algorithm: %.5lf\n", ARRAY_SIZE, myTimeSpent);
-    printf("\n* Time Used to Sort the Persons Array Containing %d Elements with C Library Sorting Algorithm: %.5lf\n", ARRAY_SIZE, CLibraryTimeSpent);
-
-    printf("\n[ Ratio Between my Time and C Library Time: %.5lf ]\n\n", myTimeSpent / CLibraryTimeSpent);
-
-    puts("( Trust me bro, it's sorted... You don't want to see 80k array items in your terminal, do you...? ;) )");
+    printf("\n* Time Used to Sort the Persons Array Containing %d Elements: %.2lf\n\n", ARRAY_SIZE, timeSpent);
+    puts("( Trust me bro, it's sorted... You don't want to see 100k array items in your terminal, do you...? ;) )");
 
     puts("\nProgram Finished. Thanks for Using!");
-
-    for (int i = 0; i < ARRAY_SIZE; i++) destroyFPerson(personArray + i);
+    
 
     return 0;
 }
@@ -191,7 +152,7 @@ void destroyFPerson(void* data) {
 
     // Deallocating the memory reserved for the name:
     if(((Person *)data)->name) free(((Person *)data)->name);
-    //free(data); data = NULL;
+    free(data); data = NULL;
 
     return;
 }
@@ -211,11 +172,7 @@ Person createPerson(char* name, unsigned int id) {
     newPerson->name = (char *) malloc(strlen(name) + 1);
     strcpy(newPerson->name, name);
 
-    Person aux = *newPerson;
-
-    free(newPerson);
-
-    return aux;
+    return *newPerson;
 }
 
 

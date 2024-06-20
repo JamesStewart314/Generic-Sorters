@@ -268,14 +268,9 @@ void gQuickSort(compareFunctionGenSort compareF, void* arrayPointer, uint64_t ar
 
 uint64_t getuint64tMin(uint64_t a, uint64_t b) { return (a < b) ? a : b; }
 
+
 bool checkArrayIsOrdered(compareFunctionGenSort compareF, void* arrayPointer, uint64_t arraySize, uint64_t dataSize) {
     if (!arrayPointer || arraySize < 2) return true;
-
-    if (!compareF || dataSize == 0) {
-        if (!compareF) fprintf(stderr, "Error: Cannot generic Quick Sort the Array if the compare function is NULL.\n");
-        if (dataSize == 0) fprintf(stderr, "Error: DataSize parameter for generic Quick Sort function cannot be zero.\n");
-        return false;
-    }
 
     void* lastPointer = arrayPointer + dataSize * (arraySize - 1);
     while (arrayPointer < lastPointer) {
@@ -285,6 +280,7 @@ bool checkArrayIsOrdered(compareFunctionGenSort compareF, void* arrayPointer, ui
 
     return true;
 }
+
 
 uint64_t generateRandomIndex(uint64_t start, uint64_t end) {
     if (end < start) return 0;
@@ -308,12 +304,31 @@ uint64_t generateRandomIndex(uint64_t start, uint64_t end) {
     }    
 }
 
+
+void gRecursiveStoogeSort(compareFunctionGenSort compareF, void* arrayPointer, uint64_t arraySize, uint64_t dataSize) {
+    if (arraySize == 3) {
+        if (compareF(arrayPointer, arrayPointer + dataSize) > 0) gSwapVariables(arrayPointer, arrayPointer + dataSize, dataSize);
+        if (compareF(arrayPointer + dataSize, arrayPointer + 2 * dataSize) > 0) gSwapVariables(arrayPointer + dataSize, arrayPointer + 2 * dataSize, dataSize);
+        if (compareF(arrayPointer, arrayPointer + dataSize) > 0) gSwapVariables(arrayPointer, arrayPointer + dataSize, dataSize);
+        return;
+    }
+
+    uint64_t subArraySize = (uint64_t)ceil((double_t)arraySize * 2 / 3);
+
+    gRecursiveStoogeSort(compareF, arrayPointer, subArraySize, dataSize);
+    gRecursiveStoogeSort(compareF, arrayPointer + dataSize * (arraySize - subArraySize), subArraySize, dataSize);
+    gRecursiveStoogeSort(compareF, arrayPointer, subArraySize, dataSize);
+
+    return;
+}
+
+
 void gBogoSort(compareFunctionGenSort compareF, void* arrayPointer, uint64_t arraySize, uint64_t dataSize) {
     if (!arrayPointer || arraySize < 2) return;
 
     if (!compareF || dataSize == 0) {
         if (!compareF) fprintf(stderr, "Error: Cannot do generic Bogo Sort the Array if the compare function is NULL.\n");
-        if (dataSize == 0) fprintf(stderr, "Error: DataSize parameter for generic Quick Sort function cannot be zero.\n");
+        if (dataSize == 0) fprintf(stderr, "Error: DataSize parameter for generic Stooge Sort function cannot be zero.\n");
         return;
     }
 
@@ -329,5 +344,24 @@ void gBogoSort(compareFunctionGenSort compareF, void* arrayPointer, uint64_t arr
 
 void gGoodEnough(compareFunctionGenSort compareF, void* arrayPointer, uint64_t arraySize, uint64_t dataSize) {
     // hmm, eh, it's good enough.
+    return;
+}
+
+void gStoogeSort(compareFunctionGenSort compareF, void* arrayPointer, uint64_t arraySize, uint64_t dataSize) {
+    if (!arrayPointer || arraySize < 2) return;
+
+    if (!compareF || dataSize == 0) {
+        if (!compareF) fprintf(stderr, "Error: Cannot do generic Stooge Sort the Array if the compare function is NULL.\n");
+        if (dataSize == 0) fprintf(stderr, "Error: DataSize parameter for generic Stooge Sort function cannot be zero.\n");
+        return;
+    }
+
+    if (arraySize == 2) {
+        if (compareF(arrayPointer, arrayPointer + dataSize) > 0) gSwapVariables(arrayPointer, arrayPointer + dataSize, dataSize);
+        return;
+    }
+
+    gRecursiveStoogeSort(compareF, arrayPointer, arraySize, dataSize);
+
     return;
 }

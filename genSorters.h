@@ -1,9 +1,9 @@
+#include <math.h>
+#include <time.h>
+#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdint.h>
-#include <stdbool.h>
-#include <math.h>
-#include <time.h>
 #include <string.h>
 
 #ifndef GENERICSORTERS_H
@@ -17,5 +17,6 @@ void gQuickSort(compareFunctionGenSort compareF, void* arrayPointer, uint64_t ar
 
 void gBogoSort(compareFunctionGenSort compareF, void* arrayPointer, uint64_t arraySize, uint64_t dataSize);
 void gGoodEnough(compareFunctionGenSort compareF, void* arrayPointer, uint64_t arraySize, uint64_t dataSize);
+void gStoogeSort(compareFunctionGenSort compareF, void* arrayPointer, uint64_t arraySize, uint64_t dataSize);
 
 #endif
