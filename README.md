@@ -16,6 +16,7 @@ Below is a table to illustrate the different functions currently available:
 |:-----------------------:|:----------------:|:------------------:|:----------------:|:----------------:|
 |                         | **Best Case**    | **Average Case**   | **Worst Case**   | **Worst Case**   |
 | Bubble Sort             | Ω(n)             | Θ(n²)              | O(n²)            | O(1)             |
+| Heap Sort               | Ω(n log n)       | Θ(n log n)         | O(n log n)       | O(1)             |
 | Merge Sort              | Ω(n log n)       | Θ(n log n)         | O(n log n)       | O(n)             |
 | Quick Sort              | Ω(n log n)       | Θ(n log n)         | O(n²)            | O(log n)         |
 
