@@ -26,7 +26,7 @@ Below is a table to illustrate the different functions currently available:
 |:-----------------------:|:----------------:|:------------------:|:----------------:|:----------------:|
 |                         | **Best Case**    | **Average Case**   | **Worst Case**   | **Worst Case**   |
 | Bogo Sort 🤹            | Ω(1)             | Θ(?)               | O(ꝏ)            | O(1)             |
-| Good Enough 🍵          | Ω(1)             | Θ(1)               | O(1)             | O(1)             |
+| Good Enough 💤          | Ω(1)             | Θ(1)               | O(1)             | O(1)             |
 | Stooge Sort 🪼          | Ω(n^(2.7095...)) | Θ(n^(2.7095...))   | O(n^(2.7095...)) | O(n)             |
 
 </div>
